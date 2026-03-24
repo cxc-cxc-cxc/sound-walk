@@ -347,7 +347,7 @@ export default function SoundWalkMap() {
         const url = await getAudioUrl(activeLocation);
         if (url && audioRef.current) {
           const currentSrc = audioRef.current.src;
-          const isSameUrl = currentSrc === url || currentSrc.endsWith(url);
+          const isSameUrl = currentSrc === url || currentSrc.endsWith(url) || (currentSrc ? url.endsWith(new URL(currentSrc, window.location.origin).pathname) : false);
           if (!isSameUrl || !currentSrc) {
             const preloaded = preloadedAudio.current.get(activeLocation.id);
             if (preloaded && preloaded.readyState >= 3) {
@@ -366,6 +366,9 @@ export default function SoundWalkMap() {
             setAudioReady(true);
           }).catch((err) => {
             console.warn("Audio play blocked:", err?.message);
+            if (err?.name === "NotAllowedError") {
+              setAudioUnlocked(false);
+            }
             setAudioReady(false);
           });
         }
