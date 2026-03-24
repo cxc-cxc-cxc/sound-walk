@@ -346,18 +346,14 @@ export default function SoundWalkMap() {
       if (activeLocation && !audioMuted) {
         const url = await getAudioUrl(activeLocation);
         if (url && audioRef.current) {
-          // Compare just the pathname part to handle relative vs absolute URL mismatch
           const currentSrc = audioRef.current.src;
-          const isSameUrl = currentSrc === url || currentSrc.endsWith(url) || (currentSrc ? url.endsWith(new URL(currentSrc, window.location.origin).pathname) : false);
+          const isSameUrl = currentSrc === url || currentSrc.endsWith(url);
           if (!isSameUrl || !currentSrc) {
-            // Use preloaded audio data if available — swap the src instantly
             const preloaded = preloadedAudio.current.get(activeLocation.id);
             if (preloaded && preloaded.readyState >= 3) {
-              // readyState >= 3 (HAVE_FUTURE_DATA) means enough buffered to play
               audioRef.current.src = preloaded.src;
               audioRef.current.loop = true;
               audioRef.current.volume = 0;
-              // No .load() needed — browser recognizes same src from cache
             } else {
               audioRef.current.src = url;
               audioRef.current.loop = true;
@@ -370,9 +366,6 @@ export default function SoundWalkMap() {
             setAudioReady(true);
           }).catch((err) => {
             console.warn("Audio play blocked:", err?.message);
-            if (err?.name === "NotAllowedError") {
-              setAudioUnlocked(false);
-            }
             setAudioReady(false);
           });
         }
