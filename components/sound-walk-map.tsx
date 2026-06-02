@@ -116,6 +116,8 @@ export default function SoundWalkMap() {
   const [audioUnlocked, setAudioUnlocked] = useState(false); // whether user has tapped to allow audio
   const [showPanel, setShowPanel] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [showLocationDetails, setShowLocationDetails] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<SoundLocationData | null>(null);
   const [walkInfo, setWalkInfo] = useState<WalkSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [audioReady, setAudioReady] = useState(false);
@@ -544,10 +546,31 @@ export default function SoundWalkMap() {
                     <div className="absolute inset-0 w-2.5 h-2.5 rounded-full pulse-ring" style={{ backgroundColor: accent }} />
                   </div>
                   <span className="text-xs sm:text-sm font-medium" style={{ color: accent }}>You&apos;re at a sound location!</span>
-                </div>
-                <h2 className="text-white font-semibold text-base sm:text-lg mt-0.5">{activeLocation?.name ?? "Unknown"}</h2>
-                <p className="text-gray-300 text-xs sm:text-sm mt-0.5 line-clamp-1 sm:line-clamp-2">{activeLocation?.description ?? ""}</p>
-                {audioMuted && (
+
+</div>
+
+<button
+  type="button"
+  onClick={() => {
+    setSelectedLocation(activeLocation);
+    setShowLocationDetails(true);
+  }}
+  className="mt-0.5 w-full text-left bg-transparent border-0 p-0"
+>
+  <h2 className="text-white font-semibold text-base sm:text-lg">
+    {activeLocation?.name ?? "Unknown"}
+  </h2>
+
+  <p className="text-gray-300 text-xs sm:text-sm mt-0.5 line-clamp-1 sm:line-clamp-2">
+    {activeLocation?.description ?? ""}
+  </p>
+
+  <p className="text-[11px] sm:text-xs mt-1 underline underline-offset-2" style={{ color: accent }}>
+    Tap to read full text
+  </p>
+</button>
+
+{audioMuted && (
                   <button onClick={toggleAudio}
                     className="mt-1.5 px-3 py-1 rounded-lg text-xs sm:text-sm text-white flex items-center gap-1.5 transition-colors hover:opacity-90"
                     style={{ backgroundColor: accent }}>
@@ -725,6 +748,60 @@ export default function SoundWalkMap() {
         </div>
       )}
 
+
+
+{/* Active location details modal */}
+<AnimatePresence>
+  {showLocationDetails && selectedLocation && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[210] bg-black/70 flex items-end sm:items-center justify-center"
+      onClick={() => setShowLocationDetails(false)}
+    >
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 100, opacity: 0 }}
+        className="rounded-t-2xl sm:rounded-2xl p-5 sm:p-6 max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl border-t sm:border border-white/10 sm:mx-4"
+        style={{ backgroundColor: bgColor }}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      >
+        <div className="flex justify-center sm:hidden mb-3">
+          <div className="w-10 h-1 rounded-full bg-white/20" />
+        </div>
+
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-wider" style={{ color: accent }}>
+              Sound location
+            </p>
+            <h2 className="text-lg sm:text-xl font-semibold text-white mt-1">
+              {selectedLocation.name}
+            </h2>
+          </div>
+
+          <button
+            onClick={() => setShowLocationDetails(false)}
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0"
+            aria-label="Close location details"
+          >
+            <X className="w-5 h-5 text-gray-400" />
+          </button>
+        </div>
+
+        <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
+          {selectedLocation.description || "No description available."}
+        </p>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
+
+
+      
       {/* Info modal */}
       <AnimatePresence>
         {showInfo && (
