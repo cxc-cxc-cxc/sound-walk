@@ -23,9 +23,9 @@ async function main() {
     await prisma.soundWalkInfo.create({
       data: {
         title: "Leipzig Sound Walk",
-        description: "An immersive audio journey through Leipzig. Discover hidden soundscapes at 15 unique locations across the city.",
-        aboutText: "This sound walk invites you to explore Leipzig through its sonic landscape. Each location reveals a unique layer of the city's rich musical and cultural heritage — from the echoing halls near Bach's church to the vibrant energy of its market squares. Put on your headphones, follow the map, and let the sounds guide your experience.",
-        instructions: "1. Enable location services on your device\n2. Put on headphones for the best experience\n3. Follow the map to each numbered location\n4. When you're within range, the audio will automatically play\n5. Take your time at each spot — listen and observe\n6. Track your progress as you visit each location\n\nTip: Visit during different times of day for varied soundscapes!",
+        description: "Ein immersiver Audio-Spaziergang durch Leipzig.",
+        aboutText: "Der Soundwalk verbindet Bewegung, Hören und Entdecken. Die Stadt wird dabei zu einer begehbaren Ausstellung, in der sich Umweltklänge und Kompositionen überlagern und gegenseitig beeinflussen. Es gibt keinen vorgegebenen Weg und keine feste Reihenfolge. Erkunde die Orte in deinem eigenen Tempo. Setze deine Kopfhörer auf, folge der Karte.",
+        instructions: "1. Aktiviere die Ortungsdienste auf deinem Gerät\n2. Setze für das beste Erlebnis Kopfhörer auf\n3. Folge der Karte zu jedem markierten Ort\n4. Sobald du in Reichweite bist, wird das Audio automatisch abgespielt\n5. Nimm dir an jedem Ort Zeit — höre zu und beobachte\n6. Verfolge deinen Fortschritt, während du jeden Ort besuchst\n\nTipp: Besuche die Orte zu verschiedenen Tageszeiten, um unterschiedliche Klanglandschaften zu erleben!",
         artistName: "",
         year: "",
         city: "Leipzig",
@@ -42,7 +42,7 @@ async function main() {
         audioBaseVolume: 0.8,
         showWelcomePage: true,
         welcomeTitle: "Leipzig Sound Walk",
-        welcomeSubtitle: "An immersive audio journey through the city of music",
+        welcomeSubtitle: "Eine immersiver Audio-Spaziergang durch die Stadt der Musik",
         welcomeImageUrl: "",
         welcomeImageCloudPath: "",
         welcomeImageIsPublic: true,
