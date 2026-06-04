@@ -42,12 +42,12 @@ function walkingDurationFromDistance(meters: number): number {
 }
 
 function formatDuration(seconds: number): string {
-  if (seconds < 60) return "< 1 min";
+  if (seconds < 60) return "< 1 Min";
   const mins = Math.round(seconds / 60);
-  if (mins < 60) return `${mins} min`;
+  if (mins < 60) return `${mins} Min`;
   const hrs = Math.floor(mins / 60);
   const rem = mins % 60;
-  return rem > 0 ? `${hrs}h ${rem}min` : `${hrs}h`;
+  return rem > 0 ? `${hrs}Std ${rem}Min` : `${hrs}Std`;
 }
 
 interface SoundLocationData {
@@ -205,7 +205,7 @@ export default function SoundWalkMap() {
   // Geolocation
   useEffect(() => {
     if (!navigator?.geolocation) {
-      setGeoError("Geolocation not supported by your browser");
+      setGeoError("Geolokalisierung wird von deinem Browser nicht unterstützt");
       return;
     }
     watchIdRef.current = navigator.geolocation.watchPosition(
@@ -215,11 +215,11 @@ export default function SoundWalkMap() {
       },
       (err) => {
         const messages: Record<number, string> = {
-          1: "Location access denied. Please enable location in your browser/phone settings and reload the page.",
-          2: "Unable to determine your location. Make sure GPS is enabled and you have a clear signal.",
-          3: "Location request timed out. Please check your GPS settings and try reloading.",
+          1: "Standortzugriff verweigert. Bitte aktiviere den Standort in deinen Browser-/Telefoneinstellungen und lade die Seite neu.",
+          2: "Dein Standort konnte nicht bestimmt werden. Stelle sicher, dass GPS aktiviert ist und du ein gutes Signal hast.",
+          3: "Zeitüberschreitung bei der Standortabfrage. Bitte überprüfe deine GPS-Einstellungen und lade die Seite erneut.",
         };
-        setGeoError(messages[err?.code] ?? err?.message ?? "Location access denied");
+        setGeoError(messages[err?.code] ?? err?.message ?? "Standortzugriff verweigert");
       },
       { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
     );
@@ -443,7 +443,7 @@ export default function SoundWalkMap() {
       <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: bgColor }}>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
           <Loader2 className="w-10 h-10 animate-spin mx-auto mb-4" style={{ color: accent }} />
-          <p className="text-gray-400">Loading Sound Walk...</p>
+          <p className="text-gray-400">Sound Walk wird geladen...</p>
         </motion.div>
       </div>
     );
@@ -462,7 +462,7 @@ export default function SoundWalkMap() {
               className="max-w-md w-full text-center space-y-5 py-8">
               {(walkInfo?.welcomeImageUrl || walkInfo?.welcomeImageCloudPath) && (
                 <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4" style={{ borderColor: accent + "40" }}>
-                  <img src={walkInfo.welcomeImageUrl || ""} alt="Welcome" className="w-full h-full object-cover" onError={e => (e.currentTarget.style.display = "none")} />
+                  <img src={walkInfo.welcomeImageUrl || ""} alt="Willkommen" className="w-full h-full object-cover" onError={e => (e.currentTarget.style.display = "none")} />
                 </div>
               )}
               {!walkInfo?.welcomeImageUrl && !walkInfo?.welcomeImageCloudPath && (
@@ -475,18 +475,18 @@ export default function SoundWalkMap() {
                 <p className="text-gray-400 text-base sm:text-lg">{walkInfo?.welcomeSubtitle || walkInfo?.description}</p>
               )}
               {walkInfo?.artistName && (
-                <p className="text-sm" style={{ color: accent }}>by {walkInfo.artistName}{walkInfo?.year ? ` · ${walkInfo.year}` : ""}</p>
+                <p className="text-sm" style={{ color: accent }}>von {walkInfo.artistName}{walkInfo?.year ? ` · ${walkInfo.year}` : ""}</p>
               )}
               {walkInfo?.city && <p className="text-sm text-gray-500">{walkInfo.city}</p>}
               <div className="space-y-2.5 text-left p-3 rounded-xl" style={{ backgroundColor: accent + "10" }}>
-                <p className="text-sm text-gray-400 flex items-start gap-2"><Navigation className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} /> Enable location access on your device</p>
-                <p className="text-sm text-gray-400 flex items-start gap-2"><Headphones className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} /> Put on headphones for the best experience</p>
-                <p className="text-sm text-gray-400 flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} /> Walk towards locations — audio plays automatically</p>
+                <p className="text-sm text-gray-400 flex items-start gap-2"><Navigation className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} /> Aktiviere den Standortzugriff auf deinem Gerät</p>
+                <p className="text-sm text-gray-400 flex items-start gap-2"><Headphones className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} /> Setze für das beste Erlebnis Kopfhörer auf</p>
+                <p className="text-sm text-gray-400 flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} /> Gehe auf die Orte zu — Audio wird automatisch abgespielt</p>
               </div>
               <button onClick={dismissWelcome}
                 className="w-full py-3 rounded-xl text-white font-semibold text-lg transition-colors hover:opacity-90"
                 style={{ backgroundColor: accent }}>
-                Start exploring
+                Jetzt erkunden
               </button>
             </motion.div>
           </motion.div>
@@ -501,13 +501,13 @@ export default function SoundWalkMap() {
             <h1 className="text-sm sm:text-lg font-semibold text-white truncate">{walkInfo?.title ?? "Sound Walk"}</h1>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-            <button onClick={() => setShowInfo(true)} className="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors" aria-label="About">
+            <button onClick={() => setShowInfo(true)} className="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors" aria-label="Info">
               <Info className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300" />
             </button>
             <button onClick={toggleAudio}
               className="p-1.5 sm:p-2 rounded-lg transition-colors flex items-center gap-1.5"
               style={{ backgroundColor: audioMuted ? "rgba(255,255,255,0.05)" : accent }}
-              aria-label={audioMuted ? "Unmute" : "Mute"}>
+              aria-label={audioMuted ? "Ton einschalten" : "Stumm schalten"}>
               {audioMuted ? <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
               {audioMuted && !audioUnlocked && <span className="text-[10px] sm:text-xs text-gray-400 hidden sm:inline">Enable</span>}
             </button>
@@ -520,7 +520,7 @@ export default function SoundWalkMap() {
         <div className="flex-shrink-0 px-3 py-2 text-center cursor-pointer" style={{ backgroundColor: accent + "15" }} onClick={toggleAudio}>
           <p className="text-xs sm:text-sm flex items-center justify-center gap-2" style={{ color: accent }}>
             <Volume2 className="w-4 h-4" />
-            <span><strong>Tap here to enable audio</strong> — sounds will play automatically at each location</span>
+            <span><strong>Tippe hier, um Audio zu aktivieren</strong> — An jedem Ort werden die Kompositionen automatisch abgespielt</span>
           </p>
         </div>
       )}
@@ -545,7 +545,7 @@ export default function SoundWalkMap() {
                     <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: accent }} />
                     <div className="absolute inset-0 w-2.5 h-2.5 rounded-full pulse-ring" style={{ backgroundColor: accent }} />
                   </div>
-                  <span className="text-xs sm:text-sm font-medium" style={{ color: accent }}>You&apos;re at a sound location!</span>
+                  <span className="text-xs sm:text-sm font-medium" style={{ color: accent }}>Du bist an einer sound-location!</span>
 
 </div>
 
@@ -558,7 +558,7 @@ export default function SoundWalkMap() {
   className="mt-0.5 w-full text-left bg-transparent border-0 p-0"
 >
   <h2 className="text-white font-semibold text-base sm:text-lg">
-    {activeLocation?.name ?? "Unknown"}
+    {activeLocation?.name ?? "Unbekannt"}
   </h2>
 
   <p className="text-gray-300 text-xs sm:text-sm mt-0.5 line-clamp-1 sm:line-clamp-2">
@@ -566,7 +566,7 @@ export default function SoundWalkMap() {
   </p>
 
   <p className="text-[11px] sm:text-xs mt-1 underline underline-offset-2" style={{ color: accent }}>
-    Tap to read full text
+    Tippe, um den vollständigen Text zu lesen
   </p>
 </button>
 
@@ -574,17 +574,17 @@ export default function SoundWalkMap() {
                   <button onClick={toggleAudio}
                     className="mt-1.5 px-3 py-1 rounded-lg text-xs sm:text-sm text-white flex items-center gap-1.5 transition-colors hover:opacity-90"
                     style={{ backgroundColor: accent }}>
-                    <Volume2 className="w-3.5 h-3.5" /> {audioUnlocked ? "Unmute audio" : "Enable audio to listen"}
+                    <Volume2 className="w-3.5 h-3.5" /> {audioUnlocked ? "Audio einschalten" : "Aktiviere Audio zum Anhören"}
                   </button>
                 )}
                 {!audioMuted && audioReady && (
                   <div className="mt-1.5 flex items-center gap-1.5 text-xs sm:text-sm" style={{ color: accent }}>
-                    <Volume2 className="w-3.5 h-3.5" /> Playing audio...
+                    <Volume2 className="w-3.5 h-3.5" /> Audio wird abgespielt...
                   </div>
                 )}
                 {!audioMuted && !audioReady && activeLocation?.audioUrl && (
                   <div className="mt-1.5 flex items-center gap-1.5 text-xs sm:text-sm text-gray-400">
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" /> Loading audio...
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" /> Audio wird geladen...
                   </div>
                 )}
               </div>
@@ -602,11 +602,11 @@ export default function SoundWalkMap() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <Route className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" style={{ color: accent }} />
-                    <span className="text-xs sm:text-sm font-medium text-white truncate">Navigating to {navTarget.name}</span>
+                    <span className="text-xs sm:text-sm font-medium text-white truncate">Navigation zu {navTarget.name}</span>
                   </div>
                   {routeLoading && (
                     <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
-                      <Loader2 className="w-3 h-3 animate-spin" /> Finding route...
+                      <Loader2 className="w-3 h-3 animate-spin" /> Route wird gesucht...
                     </div>
                   )}
                   {routeInfo && !routeLoading && (
@@ -617,7 +617,7 @@ export default function SoundWalkMap() {
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" style={{ color: accent }} />
-                        {formatDuration(walkingDurationFromDistance(routeInfo.distanceMeters))} walk
+                      {formatDuration(walkingDurationFromDistance(routeInfo.distanceMeters))} zu Fuß
                       </span>
                     </div>
                   )}
@@ -660,7 +660,7 @@ export default function SoundWalkMap() {
           className="absolute bottom-3 left-1/2 -translate-x-1/2 z-[1000] rounded-full px-4 py-2 shadow-lg flex items-center gap-1.5 transition-colors backdrop-blur-sm"
           style={{ backgroundColor: bgColor + "e6" }}>
           <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: accent }} />
-          <span className="text-xs sm:text-sm text-white">Locations</span>
+          <span className="text-xs sm:text-sm text-white">Orte</span>
           {showPanel ? <ChevronDown className="w-3.5 h-3.5 text-gray-400" /> : <ChevronUp className="w-3.5 h-3.5 text-gray-400" />}
         </button>
       </div>
@@ -681,7 +681,7 @@ export default function SoundWalkMap() {
             {/* Header */}
             <div className="flex items-center justify-between px-4 pb-2">
               <h2 className="text-sm font-semibold text-white">
-                {locations?.length ?? 0} Locations
+                {locations?.length ?? 0} Orte
               </h2>
               <button onClick={() => setShowPanel(false)} className="p-1 rounded-lg hover:bg-white/10 transition-colors">
                 <X className="w-4 h-4 text-gray-400" />
@@ -734,7 +734,7 @@ export default function SoundWalkMap() {
                               onClick={() => { startNavigation(loc); setShowPanel(false); }}
                               className="mt-1.5 flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-lg transition-colors hover:opacity-90"
                               style={{ backgroundColor: accent + "20", color: accent }}>
-                              <Navigation className="w-3 h-3" /> Navigate
+                              <Navigation className="w-3 h-3" /> Navigieren
                             </button>
                           )}
                         </div>
@@ -785,14 +785,14 @@ export default function SoundWalkMap() {
           <button
             onClick={() => setShowLocationDetails(false)}
             className="p-2 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0"
-            aria-label="Close location details"
+            aria-label="Ortdetails schließen"
           >
             <X className="w-5 h-5 text-gray-400" />
           </button>
         </div>
 
         <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
-          {selectedLocation.description || "No description available."}
+          {selectedLocation.description || "Keine Beschreibung verfügbar."}
         </p>
       </motion.div>
     </motion.div>
@@ -822,13 +822,13 @@ export default function SoundWalkMap() {
               {walkInfo?.description && <p className="text-gray-300 mb-4">{walkInfo.description}</p>}
               {walkInfo?.aboutText && (
                 <div className="mb-4">
-                  <h3 className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accent }}>About</h3>
+                  <h3 className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accent }}>Über</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{walkInfo.aboutText}</p>
                 </div>
               )}
               {walkInfo?.instructions && (
                 <div className="mb-4">
-                  <h3 className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accent }}>Instructions</h3>
+                  <h3 className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accent }}>Anleitung</h3>
                   <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-line">{walkInfo.instructions}</p>
                 </div>
               )}
@@ -836,26 +836,26 @@ export default function SoundWalkMap() {
                 <div className="mb-4">
                   <h3 className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accent }}>Credits</h3>
                   <div className="text-gray-400 text-sm space-y-1">
-                    {walkInfo?.artistName && <p><strong>Artist:</strong> {walkInfo.artistName}</p>}
-                    {walkInfo?.city && <p><strong>City:</strong> {walkInfo.city}</p>}
-                    {walkInfo?.year && <p><strong>Year:</strong> {walkInfo.year}</p>}
+                    {walkInfo?.artistName && <p><strong>Künstler:in:</strong> {walkInfo.artistName}</p>}
+                    {walkInfo?.city && <p><strong>Stadt:</strong> {walkInfo.city}</p>}
+                    {walkInfo?.year && <p><strong>Jahr:</strong> {walkInfo.year}</p>}
                     {walkInfo?.credits && <p className="whitespace-pre-line mt-2">{walkInfo.credits}</p>}
                   </div>
                 </div>
               )}
               <div className="mt-4 p-4 rounded-xl" style={{ backgroundColor: accent + "10" }}>
-                <h3 className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accent }}>How it works</h3>
+                <h3 className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accent }}>So funktioniert es</h3>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-start gap-2"><Navigation className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Allow location access to track your position</li>
-                  <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Walk towards the marked locations on the map</li>
-                  <li className="flex items-start gap-2"><Volume2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Audio plays automatically when you&apos;re within range</li>
-                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Track your progress as you visit each point</li>
+                  <li className="flex items-start gap-2"><Navigation className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Erlaube den Standortzugriff, damit deine Position erfasst werden kann</li>
+                  <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Gehe zu den markierten Orten auf der Karte</li>
+                  <li className="flex items-start gap-2"><Volume2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Audio wird automatisch abgespielt, sobald du in Reichweite bist</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: accent }} />Verfolge deinen Fortschritt, während du jeden Punkt besuchst</li>
                 </ul>
               </div>
               <button onClick={() => setShowInfo(false)}
                 className="mt-4 w-full py-2.5 rounded-xl text-white font-medium transition-colors hover:opacity-90"
                 style={{ backgroundColor: accent }}>
-                Start exploring
+                Jetzt erkunden
               </button>
             </motion.div>
           </motion.div>
@@ -1001,7 +1001,7 @@ function LeafletMapInline({
       }).addTo(map);
 
       // Tooltip with "Tap to navigate" hint
-      const tooltipLabel = isNavTarget ? "🎯 Destination" : isVisited ? "✓ Visited" : "Tap to navigate";
+      const tooltipLabel = isNavTarget ? "🎯 Ziel" : isVisited ? "✓ Besucht" : "Tippen zum Navigieren";
       marker.bindTooltip(
         `<div style="text-align:center"><strong>${loc.name}</strong><br/><span style="color:${isNavTarget ? "#f59e0b" : accent};font-size:11px">${tooltipLabel}</span></div>`,
         { direction: "top", offset: [0, -10], className: "sound-walk-tooltip" }
@@ -1086,7 +1086,7 @@ function LeafletMapInline({
       fillOpacity: 1,
     }).addTo(map);
 
-    userMarkerRef.current.bindTooltip("You are here", {
+    userMarkerRef.current.bindTooltip("Du bist hier", {
       direction: "top",
       offset: [0, -10],
       className: "sound-walk-tooltip",
