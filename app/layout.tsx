@@ -16,15 +16,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
   return {
     metadataBase: new URL(baseUrl),
-    title: "Sound Walk — Location-Based Audio Experience",
-    description: "Explore your surroundings through an immersive sound walk. Discover unique audio experiences at each location.",
+    title: "Sound Walk — standortbasiertes Audioerlebnis",
+    description: "Erkunde deine Umgebung bei einem immersiven Sound Walk. Entdecke an jedem Ort einzigartige Audioerlebnisse.",
     icons: {
       icon: "/favicon.svg",
       shortcut: "/favicon.svg",
     },
     openGraph: {
       title: "Sound Walk",
-      description: "Location-based audio experience",
+      description: "Standortbasiertes Audioerlebnis",
       images: ["/og-image.png"],
     },
   };
