@@ -475,7 +475,7 @@ export default function SoundWalkMap() {
                 <p className="text-gray-400 text-base sm:text-lg">{walkInfo?.welcomeSubtitle || walkInfo?.description}</p>
               )}
               {walkInfo?.artistName && (
-                <p className="text-sm" style={{ color: accent }}>von {walkInfo.artistName}{walkInfo?.year ? ` · ${walkInfo.year}` : ""}</p>
+                <p className="text-sm" style={{ color: accent }}> {walkInfo.artistName}{walkInfo?.year ? ` · ${walkInfo.year}` : ""}</p>
               )}
               {walkInfo?.city && <p className="text-sm text-gray-500">{walkInfo.city}</p>}
               <div className="space-y-2.5 text-left p-3 rounded-xl" style={{ backgroundColor: accent + "10" }}>
