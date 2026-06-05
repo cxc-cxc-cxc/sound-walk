@@ -94,5 +94,6 @@ model SoundWalkInfo {
   welcomeImageCloudPath String @default("")
   welcomeImageIsPublic  Boolean @default(true)
   createdAt       DateTime @default(now())
+  fontScale Float @default(1.0)
   updatedAt       DateTime @updatedAt
 }
